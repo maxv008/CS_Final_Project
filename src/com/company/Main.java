@@ -10,12 +10,12 @@ public class Main {
         Scanner in = new Scanner(System.in);
         File folder = new File(in.nextLine());
         File[] tempFileList = folder.listFiles();
-        Project[] projectList = new Project[tempFileList.length];
+        List<Project> projectList = new ArrayList<Project>();
 
         for(int i = 0; i < tempFileList.length; i++) //This puts all of the files into a string array, each with their own string.
         {
             FileReader reader;
-            char[] textBuffer = new char[1024*1024];
+            char[] textBuffer = new char[1024*1024]; //This may be a problem for much larger projects, consider later.
 
             try
             {
@@ -24,21 +24,21 @@ public class Main {
                 else
                     continue;
             }
-            catch(FileNotFoundException exception)
+            catch(FileNotFoundException e)
             {
                 continue;
                 //TODO: Handle Exception Further If Needed
             }
 
             reader.read(textBuffer,0,1024*1024);
-            projectList[i] = new Project(new String(textBuffer));
+            projectList.add(new Project(new String(textBuffer)));
         }
 
-        for(String s : projectList[0].parseImport()) //Just for testing purposes.
+        for(String s : projectList.get(0).parseImport()) //Just for testing purposes.
             System.out.println(s);
 
 
-       /* for(int i = 0; i < projectList.length; i++) //This can be used to compare every pair of projects.
+       /* for(int i = 0; i < projectList.size(); i++) //This can be used to compare every pair of projects if needed.
         {
             for(int j = 0; j < i; j++)
             {
@@ -46,7 +46,7 @@ public class Main {
             }
         } */
 
-        in.next(); //just so it doesn't quit
+        in.next(); //just so it doesn't quit, don't forget to press enter to end the process when done testing.
     }
 
 }
