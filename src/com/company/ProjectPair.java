@@ -9,7 +9,7 @@ public class ProjectPair
 {
     private Project p1;
     private Project p2;
-    private int sketchyScore; //Regression testing for how to actually seed this sketchy score may be needed, or we can juts guess.
+    private int sketchyScore; //Regression testing for how to actually seed this sketchy score may be needed, or we can just guess.
     private List<String> comments;
 
     public ProjectPair(Project p1, Project p2)
@@ -33,7 +33,7 @@ public class ProjectPair
         {
             for(int j = 0; j < p2Import.size(); j++)
             {
-                if(p1Import.get(i).equalsIgnoreCase(p2Import.get(j)))
+                if(p1Import.get(i).equalsIgnoreCase(p2Import.get(j))) //Might need something more robust than equals.
                     sketchyScore++; // Again idk about how these values should be seeded, this is a placeholder.
             }
         }
