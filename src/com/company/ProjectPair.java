@@ -7,9 +7,9 @@ import java.io.*;
  */
 public class ProjectPair
 {
-    public Project p1;
-    public Project p2;
-    private int sketchyScore;
+    private Project p1;
+    private Project p2;
+    private int sketchyScore; //Regression testing for how to actually seed this sketchy score may be needed, or we can juts guess.
     private List<String> comments;
 
     public ProjectPair(Project p1, Project p2)
@@ -25,7 +25,18 @@ public class ProjectPair
      */
     public int compareImports()
     {
+        int sketchyInitial = sketchyScore; //just gets the initials score to return the correct value
+        List<String> p1Import = p1.parseImport();
+        List<String> p2Import = p2.parseImport();
 
-        return 0; //fix this later
+        for(int i = 0; i < p1Import.size(); i++)
+        {
+            for(int j = 0; j < p2Import.size(); j++)
+            {
+                if(p1Import.get(i).equalsIgnoreCase(p2Import.get(j)))
+                    sketchyScore++; // Again idk about how these values should be seeded, this is a placeholder.
+            }
+        }
+        return sketchyScore - sketchyInitial;
     }
 }

@@ -8,15 +8,22 @@ import java.io.*;
 public class Project
 {
     private String content;
+    private String fileName;
 
-    public Project(String content)
+    public Project(String content, String fileName)
     {
         this.content = content;
+        this.fileName = fileName;
     }
 
     @Override public String toString()
     {
         return content;
+    }
+
+    public String getFileName()
+    {
+        return fileName;
     }
 
     /**

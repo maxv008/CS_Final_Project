@@ -31,7 +31,7 @@ public class Main {
             }
 
             reader.read(textBuffer,0,1024*1024);
-            projectList.add(new Project(new String(textBuffer)));
+            projectList.add(new Project(new String(textBuffer), tempFileList[i].getName()));
         }
 
         for(String s : projectList.get(0).parseImport()) //Just for testing purposes.
