@@ -1,4 +1,5 @@
 package com.company;
+
 import java.util.*;
 import java.io.*;
 
@@ -16,7 +17,8 @@ public class Project
         this.fileName = fileName;
     }
 
-    @Override public String toString()
+    @Override
+    public String toString()
     {
         return content;
     }
@@ -28,16 +30,17 @@ public class Project
 
     /**
      * Seperates out all of the import statements at the start.
+     *
      * @return A string list containing each import statement and package statement.
      */
     public List<String> parseImport()
     {
         ArrayList<String> result = new ArrayList<String>();
-        String[] firstRun = content.split(";"); //TODO: Fix this to find where import statement ends.
+        String[] firstRun = content.split(";");
 
-        for(String s : firstRun)
+        for (String s : firstRun)
         {
-            if(s.contains("import") || s.contains("package"))
+            if (s.contains("import") || s.contains("package"))
                 result.add(s);
         }
 

@@ -5,11 +5,11 @@ package com.company;
  */
 public class SketchyLearning
 {
-    int ssInput;
+    int ssImport; //Coefficient for the import statements.
 
     public SketchyLearning()
     {
-        ssInput = 1;
+        ssImport = 1;
     }
 
 
