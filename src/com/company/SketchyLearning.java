@@ -7,7 +7,7 @@ package com.company;
  */
 public class SketchyLearning
 {
-    private int ssImport; //Coefficient for the import statements.
+    private double ssImport; //Coefficient for the import statements.
 
     public SketchyLearning()
     {

@@ -10,10 +10,12 @@ public class ProjectPair
 {
     private Project p1;
     private Project p2;
-    private int sketchyScore; //Regression testing for how to actually seed this sketchy score may be needed, or we can just guess.
+    private double sketchyScore; //Regression testing for how to actually seed this sketchy score may be needed, or we can just guess.
     //TODO: Find a way to seed all of the following constant values (more to come).
-    private final int IMPORT_MAXIMUM = 5; // Maximum percentage contribution of import statements to sketchyscore.
-    private final int IMPORT_WEIGHT = 3; //Smaller number means each matching import counts more.
+    private final double IMPORT_MAXIMUM = 5; // Maximum percentage contribution of import statements to sketchyscore.
+    private final double IMPORT_WEIGHT = 3; //Smaller number means each matching import counts more.
+    private final double COMMENT_MAXIMUM = 20;
+    private final double COMMENT_WEIGHT = 3;
     //private List<String> comments; TODO: Implement comments for what is contributing to the sketchy score.
 
     public ProjectPair(Project p1, Project p2)
@@ -28,10 +30,10 @@ public class ProjectPair
      *
      * @return How much the sketchy score increased.
      */
-    public int compareImports()
+    public double compareImports()
     {
-        int sketchyInitial = sketchyScore; //just gets the initials score to return the correct value
-        int matchAmount = 0; //number of matches found
+        double sketchyInitial = sketchyScore; //just gets the initials score to return the correct value
+        double matchAmount = 0; //number of matches found
         List<String> p1Import = p1.parseImport();
         List<String> p2Import = p2.parseImport();
 
@@ -46,5 +48,75 @@ public class ProjectPair
         sketchyScore += IMPORT_MAXIMUM * (1 - Math.exp(matchAmount / (IMPORT_WEIGHT))); //Like the equation for charging capacitors.
 
         return sketchyScore - sketchyInitial;
+    }
+
+    /**
+     * Compares the comments in the projects.
+     *
+     * @return The amount that the sketchy score increased.
+     */
+    public double compareComments()
+    {
+        double sketchyInitial = sketchyScore;
+        //TODO: Compare similarity of all comments and use log scale again to add in a similarity score. Make sure not to overcount.
+
+        return 0; //TODO: Fix this later.
+    }
+
+    /**
+     * Compares the two input strings and returns a double from 0 to 1.0.
+     *
+     * @param s1 String 1
+     * @param s2 String 2
+     * @return double from 0.0 to 1.0 where 1.0 means the strings are identical.
+     */
+    private static double stringSimilarity(String s1, String s2)
+    {
+        String longer = s1;
+        String shorter = s2;
+        if (longer.length() < shorter.length())
+        {
+            longer = s2;
+            shorter = s1;
+        }
+        int longerLength = longer.length();
+        if (longerLength == 0) //Since they are both empty
+            return 1.0;
+
+        return (longerLength - getLevenshteinDistance(longer, shorter)) / (double) longerLength;
+    }
+
+    /**
+     * Standard implementation of edit distance between two strings (i.e. not originally written by me).
+     * @param s1 String 1
+     * @param s2 String 2
+     * @return The Levenshtein edit distance as a double (although it is just an integer really)
+     */
+    private static double getLevenshteinDistance(String s1, String s2) //Because I don't wanna bother setting up dependencies
+    {
+        s1 = s1.toLowerCase();
+        s2 = s2.toLowerCase();
+
+        int[] costs = new int[s2.length() + 1];
+        for(int i = 0; i <= s1.length(); i++)
+        {
+            int lastValue = i;
+            for(int j = 0; j <= s2.length(); j++)
+            {
+                if(i == 0)
+                    costs[j] = j;
+                else if (j > 0)
+                {
+                    int newValue = costs[j-1];
+                    if(s1.charAt(i-1) != s2.charAt(j-1))
+                        newValue = Math.min(Math.min(newValue,lastValue), costs[j]) + 1;
+                    costs[j-1] = lastValue;
+                    lastValue = newValue;
+                }
+            }
+            if(i > 0)
+                costs[s2.length()] = lastValue;
+        }
+        return (double) costs[s2.length()];
     }
 }
