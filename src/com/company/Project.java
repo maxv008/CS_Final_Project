@@ -49,6 +49,7 @@ public class Project
 
     /**
      * Separates out all of the comments into an array. First come all the "//" comments and then the "/**" ones follow.
+     *
      * @return List of comments including the // or /**.
      */
     public List<String> parseComments()
@@ -59,24 +60,32 @@ public class Project
         {
             if (s.contains("//"))
             {
-                //TODO: Make it cut the string to include only the part after the "//"
-                result.add(s);
+                result.add(s.substring(s.indexOf("//")));
             }
         }
 
-        for(int i = 0; i < firstRun.length; i++)
+        for (int i = 0; i < firstRun.length; i++) //TODO: Make it handle multiple "/**" comments in a single line.
         {
-            if(firstRun[i].contains("/**"))
+            String longComment = ""; //Containing everything in one string so a longcomment is a single element in result.
+
+            if (firstRun[i].contains("/**"))
             {
-                result.add(firstRun[i]); //TODO: Make it only add the part after "/**"
-                if(!firstRun[i].contains("*/")) //If statement is only here to handle the case where one line has both "/**" and "*/"
+                if (firstRun[i].contains("*/")) //Meaning the entire thing is one line total.
                 {
-                    while (!firstRun[++i].contains("*/"))
+                    longComment += firstRun[i].substring(firstRun[i].indexOf("/**"), firstRun[i].indexOf("*/") + 2) + "\n";
+                } else
+                {
+                    longComment += firstRun[i].substring(firstRun[i].indexOf("/**")) + "\n";
+                    i++; //To prevent it repeating the first line in the result.
+                    while (!firstRun[i].contains("*/"))
                     {
-                        result.add(firstRun[i]);
+                        longComment += firstRun[i] + "\n";
+                        i++; //Messing with the i variable is probably a bad idea but whatever.
+                        if (i >= firstRun.length) break;//in case there never is a "*/"
                     }
-                    result.add(firstRun[i]); //TODO: Fix this so it only adds the part before "*/"
+                    longComment += firstRun[i].substring(0, firstRun[i].indexOf("*/") + 2);
                 }
+                result.add(longComment);
             }
         }
 

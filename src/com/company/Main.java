@@ -34,9 +34,10 @@ public class Main {
             projectList.add(new Project(new String(textBuffer), tempFileList[i].getName()));
         }
 
-        for(String s : projectList.get(0).parseImport()) //Just for testing purposes.
+        for(String s : projectList.get(0).parseComments()) //Just for testing purposes.
+        {
             System.out.println(s);
-
+        }
 
        /* for(int i = 0; i < projectList.size(); i++) //This can be used to compare every pair of projects when needed.
         {
