@@ -38,7 +38,7 @@ public class Main {
             System.out.println(s);
 
 
-       /* for(int i = 0; i < projectList.size(); i++) //This can be used to compare every pair of projects if needed.
+       /* for(int i = 0; i < projectList.size(); i++) //This can be used to compare every pair of projects when needed.
         {
             for(int j = 0; j < i; j++)
             {

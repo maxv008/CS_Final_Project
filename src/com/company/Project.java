@@ -46,4 +46,40 @@ public class Project
 
         return result;
     }
+
+    /**
+     * Separates out all of the comments into an array. First come all the "//" comments and then the "/**" ones follow.
+     * @return List of comments including the // or /**.
+     */
+    public List<String> parseComments()
+    {
+        List<String> result = new ArrayList<>();
+        String[] firstRun = content.split("\n");
+        for (String s : firstRun)
+        {
+            if (s.contains("//"))
+            {
+                //TODO: Make it cut the string to include only the part after the "//"
+                result.add(s);
+            }
+        }
+
+        for(int i = 0; i < firstRun.length; i++)
+        {
+            if(firstRun[i].contains("/**"))
+            {
+                result.add(firstRun[i]); //TODO: Make it only add the part after "/**"
+                if(!firstRun[i].contains("*/")) //If statement is only here to handle the case where one line has both "/**" and "*/"
+                {
+                    while (!firstRun[++i].contains("*/"))
+                    {
+                        result.add(firstRun[i]);
+                    }
+                    result.add(firstRun[i]); //TODO: Fix this so it only adds the part before "*/"
+                }
+            }
+        }
+
+        return result;
+    }
 }
