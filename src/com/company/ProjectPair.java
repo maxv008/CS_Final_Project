@@ -58,9 +58,24 @@ public class ProjectPair
     public double compareComments()
     {
         double sketchyInitial = sketchyScore;
-        //TODO: Compare similarity of all comments and use log scale again to add in a similarity score. Make sure not to overcount.
+        double matchScore = 0;
+        List<String> p1Comments = p1.parseComments();
+        List<String> p2Comments = p2.parseComments();
 
-        return 0; //TODO: Fix this later.
+        for (String s1 : p1Comments)
+        {
+            double greatest = 0;
+            for (String s2 : p2Comments) //For each string it only matches it to the most similar comment.
+            {
+                double similarity = stringSimilarity(s1, s2);
+                greatest = Math.max(similarity, greatest);
+            }
+            matchScore += greatest;
+        }
+        //TODO: See if there is a more robust way to use stringSimilarity.
+
+        sketchyScore += COMMENT_MAXIMUM * (1 - Math.exp(matchScore / COMMENT_WEIGHT));
+        return sketchyScore - sketchyInitial;
     }
 
     /**
@@ -88,6 +103,7 @@ public class ProjectPair
 
     /**
      * Standard implementation of edit distance between two strings (i.e. not originally written by me).
+     *
      * @param s1 String 1
      * @param s2 String 2
      * @return The Levenshtein edit distance as a double (although it is just an integer really)
@@ -98,23 +114,23 @@ public class ProjectPair
         s2 = s2.toLowerCase();
 
         int[] costs = new int[s2.length() + 1];
-        for(int i = 0; i <= s1.length(); i++)
+        for (int i = 0; i <= s1.length(); i++)
         {
             int lastValue = i;
-            for(int j = 0; j <= s2.length(); j++)
+            for (int j = 0; j <= s2.length(); j++)
             {
-                if(i == 0)
+                if (i == 0)
                     costs[j] = j;
                 else if (j > 0)
                 {
-                    int newValue = costs[j-1];
-                    if(s1.charAt(i-1) != s2.charAt(j-1))
-                        newValue = Math.min(Math.min(newValue,lastValue), costs[j]) + 1;
-                    costs[j-1] = lastValue;
+                    int newValue = costs[j - 1];
+                    if (s1.charAt(i - 1) != s2.charAt(j - 1))
+                        newValue = Math.min(Math.min(newValue, lastValue), costs[j]) + 1;
+                    costs[j - 1] = lastValue;
                     lastValue = newValue;
                 }
             }
-            if(i > 0)
+            if (i > 0)
                 costs[s2.length()] = lastValue;
         }
         return (double) costs[s2.length()];
