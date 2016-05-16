@@ -45,7 +45,7 @@ public class Main
             }
         }
 
-        for (ProjectPair p : pairList)
+        for (ProjectPair p : pairList) //For testing purposes.
         {
             p.compareComments();
             p.compareImports();

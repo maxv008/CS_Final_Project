@@ -33,12 +33,12 @@ public class Project
      *
      * @return A string list containing each import statement and package statement.
      */
-    public List<String> parseImport()
+    public List<String> parseImport() //TODO: to speedup can stop checking after a non import statement (if actually needed).
     {
         ArrayList<String> result = new ArrayList<String>();
         String[] firstRun = content.split(";");
 
-        for (String s : firstRun)
+        for (String s : firstRun) //TODO: Might need to see if there is a comma syntax variation to consider.
         {
             if (s.contains("import") || s.contains("package"))
                 result.add(s);
@@ -60,7 +60,7 @@ public class Project
         {
             if (s.contains("//"))
             {
-                result.add(s.substring(s.indexOf("//")));
+                result.add(s.substring(s.indexOf("//"))); //TODO: Maybe change index to not include the "//" characters.
             }
         }
 

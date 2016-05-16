@@ -8,8 +8,7 @@ import java.io.*;
  */
 public class ProjectPair
 {
-    private Project p1;
-    private Project p2;
+    private Project p1, p2;
     private double sketchyScore; //Regression testing for how to actually seed this sketchy score may be needed, or we can just guess.
     //TODO: Find a way to seed all of the following constant values (more to come).
     private final double IMPORT_MAXIMUM = 5; // Maximum percentage contribution of import statements to sketchyscore.
@@ -35,7 +34,7 @@ public class ProjectPair
      *
      * @return How much the sketchy score increased.
      */
-    public double compareImports()
+    public double compareImports() //TODO: Consider order of import statements.
     {
         double sketchyInitial = sketchyScore; //just gets the initials score to return the correct value
         double matchAmount = 0; //number of matches found
@@ -46,7 +45,7 @@ public class ProjectPair
         {
             for (int j = 0; j < p2Import.size(); j++)
             {
-                if (p1Import.get(i).equalsIgnoreCase(p2Import.get(j))) //Might need something more robust than equals.
+                if (p1Import.get(i).equalsIgnoreCase(p2Import.get(j))) //TODO: Might need something more robust than equals.
                     matchAmount++;
             }
         }
@@ -103,11 +102,12 @@ public class ProjectPair
         if (longerLength == 0) //Since they are both empty
             return 1.0;
 
-        return (longerLength - getLevenshteinDistance(longer, shorter)) / (double) longerLength;
+        return ((double) longerLength - getLevenshteinDistance(longer, shorter)) / (double) longerLength;
     }
 
     /**
      * Standard implementation of edit distance between two strings (i.e. not originally written by me).
+     * Time complexity is O(n*k) where n and k are the length of the strings.
      *
      * @param s1 String 1
      * @param s2 String 2
