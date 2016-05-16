@@ -13,9 +13,9 @@ public class ProjectPair
     private double sketchyScore; //Regression testing for how to actually seed this sketchy score may be needed, or we can just guess.
     //TODO: Find a way to seed all of the following constant values (more to come).
     private final double IMPORT_MAXIMUM = 5; // Maximum percentage contribution of import statements to sketchyscore.
-    private final double IMPORT_WEIGHT = 3; //Smaller number means each matching import counts more.
+    private final double IMPORT_WEIGHT = 2; //Smaller number means each matching import counts more, but never more than maximum.
     private final double COMMENT_MAXIMUM = 20;
-    private final double COMMENT_WEIGHT = 3;
+    private final double COMMENT_WEIGHT = 2;
     //private List<String> comments; TODO: Implement comments for what is contributing to the sketchy score.
 
     public ProjectPair(Project p1, Project p2)
@@ -23,6 +23,11 @@ public class ProjectPair
         this.p1 = p1;
         this.p2 = p2;
         sketchyScore = 0;
+    }
+
+    public double getSketchyScore()
+    {
+        return sketchyScore;
     }
 
     /**
@@ -45,7 +50,7 @@ public class ProjectPair
                     matchAmount++;
             }
         }
-        sketchyScore += IMPORT_MAXIMUM * (1 - Math.exp(matchAmount / (IMPORT_WEIGHT))); //Like the equation for charging capacitors.
+        sketchyScore += IMPORT_MAXIMUM * (1 - Math.exp(-matchAmount / (IMPORT_WEIGHT))); //Like the equation for charging capacitors.
 
         return sketchyScore - sketchyInitial;
     }
@@ -74,7 +79,7 @@ public class ProjectPair
         }
         //TODO: See if there is a more robust way to use stringSimilarity.
 
-        sketchyScore += COMMENT_MAXIMUM * (1 - Math.exp(matchScore / COMMENT_WEIGHT));
+        sketchyScore += COMMENT_MAXIMUM * (1 - Math.exp(-matchScore / COMMENT_WEIGHT));
         return sketchyScore - sketchyInitial;
     }
 

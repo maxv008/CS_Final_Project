@@ -14,6 +14,7 @@ public class Main
         File folder = new File(in.nextLine());
         File[] tempFileList = folder.listFiles();
         List<Project> projectList = new ArrayList<Project>();
+        List<ProjectPair> pairList = new ArrayList<>();
 
         for (int i = 0; i < tempFileList.length; i++) //This puts all of the files into a string array, each with their own string.
         {
@@ -36,16 +37,20 @@ public class Main
             projectList.add(new Project(new String(textBuffer), tempFileList[i].getName()));
         }
 
-        for (String s : projectList.get(0).parseComments()) //Just for testing purposes.
-            System.out.println(s);
-
-       /* for(int i = 0; i < projectList.size(); i++) //This can be used to compare every pair of projects when needed.
+        for(int i = 0; i < projectList.size(); i++) //This can be used to compare every pair of projects when needed.
         {
             for(int j = 0; j < i; j++)
             {
-
+                pairList.add(new ProjectPair(projectList.get(i), projectList.get(j)));
             }
-        } */
+        }
+
+        for(ProjectPair p : pairList)
+        {
+            p.compareComments();
+            p.compareImports();
+            System.out.println(p.getSketchyScore());
+        }
 
         in.next(); //just so it doesn't quit, don't forget to press enter to end the process when done testing.
     }
