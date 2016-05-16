@@ -37,15 +37,15 @@ public class Main
             projectList.add(new Project(new String(textBuffer), tempFileList[i].getName()));
         }
 
-        for(int i = 0; i < projectList.size(); i++) //This can be used to compare every pair of projects when needed.
+        for (int i = 0; i < projectList.size(); i++) //This can be used to compare every pair of projects when needed.
         {
-            for(int j = 0; j < i; j++)
+            for (int j = 0; j < i; j++)
             {
                 pairList.add(new ProjectPair(projectList.get(i), projectList.get(j)));
             }
         }
 
-        for(ProjectPair p : pairList)
+        for (ProjectPair p : pairList)
         {
             p.compareComments();
             p.compareImports();
