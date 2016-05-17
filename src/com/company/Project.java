@@ -68,14 +68,14 @@ public class Project
         {
             String longComment = ""; //Containing everything in one string so a longcomment is a single element in result.
 
-            if (firstRun[i].contains("/**"))
+            if (firstRun[i].contains("/*")) //TODO: Test for "/*" parsing which I just added.
             {
                 if (firstRun[i].contains("*/")) //Meaning the entire thing is one line total.
                 {
-                    longComment += firstRun[i].substring(firstRun[i].indexOf("/**"), firstRun[i].indexOf("*/") + 2) + "\n";
+                    longComment += firstRun[i].substring(firstRun[i].indexOf("/*"), firstRun[i].indexOf("*/") + 2) + "\n";
                 } else
                 {
-                    longComment += firstRun[i].substring(firstRun[i].indexOf("/**")) + "\n";
+                    longComment += firstRun[i].substring(firstRun[i].indexOf("/*")) + "\n";
                     i++; //To prevent it repeating the first line in the result.
                     while (!firstRun[i].contains("*/"))
                     {
