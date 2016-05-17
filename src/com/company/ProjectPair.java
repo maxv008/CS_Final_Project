@@ -9,7 +9,7 @@ import java.io.*;
 public class ProjectPair
 {
     private Project p1, p2;
-    private double sketchyScore; //Regression testing for how to actually seed this sketchy score may be needed, or we can just guess.
+    private double sketchyScore; //When we are done this should cap out at 100 (i.e. all of our MAXIMUM constants sum to 100).
     //TODO: Find a way to seed all of the following constant values (more to come).
     private final double IMPORT_MAXIMUM = 5; // Maximum percentage contribution of import statements to sketchyscore.
     private final double IMPORT_WEIGHT = 2; //Smaller number means each matching import counts more, but never more than maximum.

@@ -5,7 +5,7 @@ package com.company;
  * <p>
  * I have no idea how this will end up working.
  */
-public class SketchyLearning
+public class SketchyLearning //IGNORE THIS FOR NOW, JUST A PLACEHOLDER.
 {
     private double ssImport; //Coefficient for the import statements.
 

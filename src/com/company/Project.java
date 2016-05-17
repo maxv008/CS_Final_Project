@@ -48,7 +48,7 @@ public class Project
     }
 
     /**
-     * Separates out all of the comments into an array. First come all the "//" comments and then the "/**" ones follow.
+     * Separates out all of the comments into an array. First come all the "//" comments and then the "/*" ones follow.
      *
      * @return List of comments including the // or /**.
      */
@@ -64,7 +64,7 @@ public class Project
             }
         }
 
-        for (int i = 0; i < firstRun.length; i++) //TODO: Make it handle multiple "/**" comments in a single line.
+        for (int i = 0; i < firstRun.length; i++) //TODO: Make it handle multiple "/*" comments in a single line.
         {
             String longComment = ""; //Containing everything in one string so a longcomment is a single element in result.
 
@@ -81,7 +81,7 @@ public class Project
                     {
                         longComment += firstRun[i] + "\n";
                         i++; //Messing with the i variable is probably a bad idea but whatever.
-                        if (i >= firstRun.length) break;//in case there never is a "*/"
+                        if (i >= firstRun.length) break;//in case there never is a "*/" or if I messed something up.
                     }
                     longComment += firstRun[i].substring(0, firstRun[i].indexOf("*/") + 2);
                 }
