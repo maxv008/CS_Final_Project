@@ -15,6 +15,7 @@ public class ProjectPair
     private final double IMPORT_WEIGHT = 2; //Smaller number means each matching import counts more, but never more than maximum.
     private final double COMMENT_MAXIMUM = 20;
     private final double COMMENT_WEIGHT = 2;
+    //Equation to use: 2/(1 + Math.exp(-Math.pow(x,^2))) -1
     //private List<String> comments; TODO: Implement comments for what is contributing to the sketchy score.
 
     public ProjectPair(Project p1, Project p2)
@@ -49,7 +50,7 @@ public class ProjectPair
                     matchAmount++;
             }
         }
-        sketchyScore += IMPORT_MAXIMUM * (1 - Math.exp(-matchAmount / (IMPORT_WEIGHT))); //Like the equation for charging capacitors.
+        sketchyScore += IMPORT_MAXIMUM * (2.0 / (1 + Math.exp(-Math.pow(IMPORT_WEIGHT, 2))) - 1.0); //Like the equation for charging capacitors.
 
         return sketchyScore - sketchyInitial;
     }

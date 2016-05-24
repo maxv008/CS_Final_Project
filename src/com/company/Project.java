@@ -4,7 +4,7 @@ import java.util.*;
 import java.io.*;
 
 /**
- * Created by maxv0 on 5/3/2016.
+ * Created by Max Vigdorchik on 5/3/2016.
  */
 public class Project
 {

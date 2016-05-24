@@ -1,17 +1,21 @@
 package com.company;
 
+import java.util.*;
+
 /**
- * Created by maxv0 on 5/6/2016.
+ * Created by Max Vigdorchik on 5/6/2016.
  * <p>
  * I have no idea how this will end up working.
  */
 public class SketchyLearning //IGNORE THIS FOR NOW, JUST A PLACEHOLDER.
 {
-    private double ssImport; //Coefficient for the import statements.
+    public List<Double> constants;
+    public List<Project> projects;
 
-    public SketchyLearning()
+    public SketchyLearning(List<Project> projects)
     {
-        ssImport = 1;
+        constants = new ArrayList<>();
+        this.projects = projects;
     }
 
 

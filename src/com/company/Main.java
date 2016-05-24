@@ -5,7 +5,7 @@ import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.util.*;
 
-//Test This Directory: C:\Users\maxv0\OneDrive\Projects\Test
+//Test This Directory: C:\Users\maxv0\OneDrive\Projects\Test or C:\Users\Max\SkyDrive\Projects\Test
 public class Main
 {
 
@@ -43,6 +43,9 @@ public class Main
             p.compareImports();
             System.out.println(p.getSketchyScore());
         }
+
+        //TODO: Following section will be used to implement machine learning.
+        SketchyLearning s = new SketchyLearning(projectList);
 
         in.next(); //just so it doesn't quit, don't forget to press enter to end the process when done testing.
     }
