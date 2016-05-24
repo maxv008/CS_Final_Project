@@ -34,18 +34,18 @@ public class ProjectPair
      *
      * @return How much the sketchy score increased.
      */
-    public double compareImports() //TODO: Consider order of import statements.
+    public double compareImports() //TODO: Consider order of import statements as well, maybe worth more than them matching.
     {
         double sketchyInitial = sketchyScore; //just gets the initials score to return the correct value
         double matchAmount = 0; //number of matches found
         List<String> p1Import = p1.parseImport();
         List<String> p2Import = p2.parseImport();
 
-        for (int i = 0; i < p1Import.size(); i++)
+        for (String s1 : p1Import)
         {
-            for (int j = 0; j < p2Import.size(); j++)
+            for (String s2 : p2Import)
             {
-                if (p1Import.get(i).equalsIgnoreCase(p2Import.get(j))) //TODO: Might need something more robust than equals.
+                if (s1.equalsIgnoreCase(s2)) //TODO: Might need something more robust than equals.
                     matchAmount++;
             }
         }
