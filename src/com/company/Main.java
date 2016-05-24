@@ -1,6 +1,8 @@
 package com.company;
 
 import java.io.*;
+import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
 import java.util.*;
 
 //Test This Directory: C:\Users\maxv0\OneDrive\Projects\Test
@@ -16,25 +18,15 @@ public class Main
         List<Project> projectList = new ArrayList<Project>();
         List<ProjectPair> pairList = new ArrayList<>();
 
-        for (int i = 0; i < tempFileList.length; i++) //This puts all of the files into a string array, each with their own string.
-        {
-            FileReader reader;
-            char[] textBuffer = new char[1024 * 1024]; //This may be a problem for much larger projects, consider later.
+        if (!folder.isDirectory()) {
+            System.err.format("%s is not a directory!", folder.getAbsolutePath());
+            System.exit(1);
+        }
 
-            try
-            {
-                if (!tempFileList[i].isDirectory())
-                    reader = new FileReader(tempFileList[i]);
-                else
-                    continue;
-            } catch (FileNotFoundException e)
-            {
-                continue;
-                //TODO: Handle Exception Further If Needed
-            }
-
-            reader.read(textBuffer, 0, 1024 * 1024);
-            projectList.add(new Project(new String(textBuffer), tempFileList[i].getName()));
+        BufferedReader bufferedReader;
+        for (File file : folder.listFiles()) {
+            String allTextInFile = new String(Files.readAllBytes(file.toPath()), StandardCharsets.UTF_8);
+            projectList.add(new Project(allTextInFile, file.getName()));
         }
 
         for (int i = 0; i < projectList.size(); i++) //This can be used to compare every pair of projects when needed.
