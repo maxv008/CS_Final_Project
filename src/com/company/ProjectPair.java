@@ -4,7 +4,7 @@ import java.util.*;
 import java.io.*;
 
 /**
- * Created by maxv0 on 5/3/2016.
+ * Created by Max Vigdorchik on 5/3/2016.
  */
 public class ProjectPair
 {
@@ -15,7 +15,7 @@ public class ProjectPair
     private final double IMPORT_WEIGHT = 2; //Smaller number means each matching import counts more, but never more than maximum.
     private final double COMMENT_MAXIMUM = 20;
     private final double COMMENT_WEIGHT = 2;
-    //Equation to use: 2/(1 + Math.exp(-Math.pow(x,^2))) -1
+    //Equation to use: 2/(1 + Math.exp(-Math.pow(x,2))) -1 because it grows most in middle instead of start
     //private List<String> comments; TODO: Implement comments for what is contributing to the sketchy score.
 
     public ProjectPair(Project p1, Project p2)
@@ -50,7 +50,7 @@ public class ProjectPair
                     matchAmount++;
             }
         }
-        sketchyScore += IMPORT_MAXIMUM * (2.0 / (1 + Math.exp(-Math.pow(IMPORT_WEIGHT, 2))) - 1.0); //Like the equation for charging capacitors.
+        sketchyScore += IMPORT_MAXIMUM * (2.0 / (1 + Math.exp(-IMPORT_WEIGHT*Math.pow(matchAmount, 2))) - 1.0);
 
         return sketchyScore - sketchyInitial;
     }
@@ -79,12 +79,12 @@ public class ProjectPair
         }
         //TODO: See if there is a more robust way to use stringSimilarity.
 
-        sketchyScore += COMMENT_MAXIMUM * (1 - Math.exp(-matchScore / COMMENT_WEIGHT));
+        sketchyScore += COMMENT_MAXIMUM * (2.0 / (1 + Math.exp(-COMMENT_WEIGHT*Math.pow(matchScore, 2))) - 1.0);
         return sketchyScore - sketchyInitial;
     }
 
     /**
-     * Compares the two input strings and returns a double from 0 to 1.0.
+     * Compares the two input strings and returns a double from 0 to 1.0. Goes with the Ldistance I found online.
      *
      * @param s1 String 1
      * @param s2 String 2
@@ -107,7 +107,7 @@ public class ProjectPair
     }
 
     /**
-     * Standard implementation of edit distance between two strings (i.e. not originally written by me).
+     * Standard implementation of edit distance between two strings (i.e. not originally written by me and found online).
      * Time complexity is O(n*k) where n and k are the length of the strings.
      *
      * @param s1 String 1
