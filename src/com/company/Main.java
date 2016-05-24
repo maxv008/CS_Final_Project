@@ -44,6 +44,9 @@ public class Main
             System.out.println(p.getSketchyScore());
         }
 
+        //TODO: Following section will be used to implement machine learning.
+        SketchyLearning s = new SketchyLearning(projectList);
+
         in.next(); //just so it doesn't quit, don't forget to press enter to end the process when done testing.
     }
 
