@@ -12,7 +12,7 @@ public class ProjectPair {
     //TODO: Find a way to seed all of the following constant values (more to come).
     private final double IMPORT_MAXIMUM = 5; //Might want to hardcode this as 0 since our test cases have no imports.
     private final double IMPORT_WEIGHT = 1; //Smaller number means each matching import counts more, but never more than maximum.
-    private final double COMMENT_MAXIMUM = 20; //Maximum percentage contribution of import statements to sketchyscore.
+    private final double COMMENT_MAXIMUM = 20; //Maximum percentage contribution of comments to sketchyscore.
     private final double COMMENT_WEIGHT = 1;
     //Equation to use: 2/(1 + Math.exp(-Math.pow(x,2))) -1 because it grows most in middle instead of start
     //private List<String> comments; TODO: Implement comments for what is contributing to the sketchy score.
