@@ -8,19 +8,31 @@ import java.io.*;
  */
 public class ProjectPair {
     private Project p1, p2;
-    private double sketchyScore; //When we are done this should cap out at 100 (i.e. all of our MAXIMUM constants sum to 100).
+    //private double sketchyScore; //When we are done this should cap out at 100 (i.e. all of our MAXIMUM constants sum to 100).
     //TODO: Find a way to seed all of the following constant values (more to come).
-    private final double IMPORT_MAXIMUM = 5; // Maximum percentage contribution of import statements to sketchyscore.
-    private final double IMPORT_WEIGHT = 2; //Smaller number means each matching import counts more, but never more than maximum.
-    private final double COMMENT_MAXIMUM = 20;
-    private final double COMMENT_WEIGHT = 2;
+    private final double IMPORT_MAXIMUM = 5; //Might want to hardcode this as 0 since our test cases have no imports.
+    private final double IMPORT_WEIGHT = 1; //Smaller number means each matching import counts more, but never more than maximum.
+    private final double COMMENT_MAXIMUM = 20; //Maximum percentage contribution of import statements to sketchyscore.
+    private final double COMMENT_WEIGHT = 1;
     //Equation to use: 2/(1 + Math.exp(-Math.pow(x,2))) -1 because it grows most in middle instead of start
     //private List<String> comments; TODO: Implement comments for what is contributing to the sketchy score.
 
     public ProjectPair(Project p1, Project p2) {
         this.p1 = p1;
         this.p2 = p2;
-        sketchyScore = 0;
+        //sketchyScore = 0;
+    }
+
+    public double getSketchyScore()
+    {
+        double result = 0;
+        double importScore = compareImports();
+        double commentScore = compareComments();
+
+        result += IMPORT_MAXIMUM * (2.0 / (1 + Math.exp(-IMPORT_WEIGHT * Math.pow(importScore, 2))) - 1.0);
+        result += COMMENT_MAXIMUM * (2.0 / (1 + Math.exp(-COMMENT_WEIGHT * Math.pow(commentScore, 2))) - 1.0);
+
+        return result;
     }
 
     /**
@@ -30,7 +42,6 @@ public class ProjectPair {
      */
     public double compareImports() //TODO: Consider order of import statements.
     {
-        double sketchyInitial = sketchyScore; //just gets the initials score to return the correct value
         double matchAmount = 0; //number of matches found
         List<String> p1Import = p1.parseImport();
         List<String> p2Import = p2.parseImport();
@@ -41,9 +52,9 @@ public class ProjectPair {
                     matchAmount++;
             }
         }
-        sketchyScore += IMPORT_MAXIMUM * (2.0 / (1 + Math.exp(-IMPORT_WEIGHT * Math.pow(matchAmount, 2))) - 1.0);
+        //sketchyScore += IMPORT_MAXIMUM * (2.0 / (1 + Math.exp(-IMPORT_WEIGHT * Math.pow(matchAmount, 2))) - 1.0); DO NOT UNCOMMENT
 
-        return sketchyScore - sketchyInitial;
+        return matchAmount;
     }
 
     /**
@@ -52,7 +63,6 @@ public class ProjectPair {
      * @return The amount that the sketchy score increased.
      */
     public double compareComments() {
-        double sketchyInitial = sketchyScore;
         double matchScore = 0;
         List<String> p1Comments = p1.parseComments();
         List<String> p2Comments = p2.parseComments();
@@ -68,8 +78,8 @@ public class ProjectPair {
         }
         //TODO: See if there is a more robust way to use stringSimilarity.
 
-        sketchyScore += COMMENT_MAXIMUM * (2.0 / (1 + Math.exp(-COMMENT_WEIGHT * Math.pow(matchScore, 2))) - 1.0);
-        return sketchyScore - sketchyInitial;
+        //sketchyScore += COMMENT_MAXIMUM * (2.0 / (1 + Math.exp(-COMMENT_WEIGHT * Math.pow(matchScore, 2))) - 1.0); DO NOT UNCOMMENT
+        return matchScore;
     }
 
     /**
@@ -134,7 +144,4 @@ public class ProjectPair {
         return p2;
     }
 
-    public double getSketchyScore() {
-        return sketchyScore;
-    }
 }

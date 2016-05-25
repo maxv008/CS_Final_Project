@@ -39,8 +39,6 @@ public class Main
 
         for (ProjectPair p : pairList) //For testing purposes.
         {
-            p.compareComments();
-            p.compareImports();
             System.out.println(p.getSketchyScore());
         }
 
