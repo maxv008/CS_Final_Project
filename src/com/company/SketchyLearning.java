@@ -11,8 +11,8 @@ import java.io.*;
 public class SketchyLearning //IGNORE THIS FOR NOW, JUST A PLACEHOLDER.
 {
     public List<Double> constants;
-    public List<Project> projects;
-    public List<ProjectPair> pairList;
+    private final List<Project> projects;
+    private final List<ProjectPair> pairList;
     private List<Map.Entry<ProjectPair,Integer>> data;
 
     public SketchyLearning(List<Project> projects, List<ProjectPair> pairList)
@@ -34,11 +34,15 @@ public class SketchyLearning //IGNORE THIS FOR NOW, JUST A PLACEHOLDER.
 
     /**
      * Pulls data from the 41 test cases from APCS, and organizes them in a such a way that it can be used for regression.
-     * The data is not formatted in a good way for this, so the method will be really ugly. Sorry.
+     * The data is not formatted in a good way for this, so the method will be really ugly. Sorry. It is also specific to
+     * the exact set of files Mr. Young gave and does not apply otherwise.
      */
-    public static List<Map.Entry<ProjectPair,Integer>> gatherData() throws FileNotFoundException,IOException
+    private List<Map.Entry<ProjectPair,Integer>> gatherData() throws FileNotFoundException,IOException
     {
         List<Map.Entry<ProjectPair,Integer>> result = new ArrayList<>();
+        List<ProjectPair> unusedPairs = new LinkedList<>(); //Since the data only includes top 90%, this allows other 10% to be filled with 0s.
+        unusedPairs.addAll(pairList); //Needed because its a linked list (will speed up the remove method by a good amount).
+
         for(int i = 0; i <= 343; i++)
         {
             BufferedReader in = new BufferedReader( //Sorry this is meant for my computer for now.
@@ -46,8 +50,10 @@ public class SketchyLearning //IGNORE THIS FOR NOW, JUST A PLACEHOLDER.
                     "match" + i + "-link.html"));
             for(int j = 0; j < 5; j++)
                 in.readLine();
-            String projectNameLine = in.readLine();
-            String matchValueLine = in.readLine();
+            String projectNameLine = in.readLine(); //6th line which contains the project names.
+            String matchValueLine = in.readLine(); //7th line which contains the percent match.
+
+            //unusedPairs.remove(The Project Pair generated goes here)
         }
         return null; //TODO: Fix this (gotta please that compiler).
     }

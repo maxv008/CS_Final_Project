@@ -35,11 +35,12 @@ public class Main
             {
                 pairList.add(new ProjectPair(projectList.get(i), projectList.get(j)));
             }
+            System.out.println(projectList.get(i).getFileName().substring(0,10)); //TODO: Remove this when done testing.
         }
 
         for (ProjectPair p : pairList) //For testing purposes.
         {
-            System.out.println(p.getSketchyScore());
+            //System.out.println(p.getSketchyScore());
         }
 
         //TODO: Following section will be used to implement machine learning.
