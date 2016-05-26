@@ -28,6 +28,15 @@ public class Project
         return fileName;
     }
 
+    @Override
+    public boolean equals(Object o )
+    {
+        if(!(o instanceof Project))
+            return false;
+
+        return ((Project) o).toString().equals(this.toString()) && ((Project) o).getFileName().equals(this.getFileName());
+    }
+
     /**
      * Seperates out all of the import statements at the start.
      *

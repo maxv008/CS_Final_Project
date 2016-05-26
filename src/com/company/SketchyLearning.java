@@ -13,7 +13,7 @@ public class SketchyLearning //IGNORE THIS FOR NOW, JUST A PLACEHOLDER.
     public List<Double> constants;
     private final List<Project> projects;
     private final List<ProjectPair> pairList;
-    private List<Map.Entry<ProjectPair,Integer>> data;
+    private List<Map.Entry<ProjectPair, Double>> data;
 
     public SketchyLearning(List<Project> projects, List<ProjectPair> pairList)
     {
@@ -23,10 +23,10 @@ public class SketchyLearning //IGNORE THIS FOR NOW, JUST A PLACEHOLDER.
         try
         {
             data = gatherData();
-        }catch(FileNotFoundException e)
+        } catch (FileNotFoundException e)
         {
             //TODO: HANDLE IT.
-        }catch(IOException e)
+        } catch (IOException e)
         {
             //TODO: Catch something here too.
         }
@@ -37,24 +37,44 @@ public class SketchyLearning //IGNORE THIS FOR NOW, JUST A PLACEHOLDER.
      * The data is not formatted in a good way for this, so the method will be really ugly. Sorry. It is also specific to
      * the exact set of files Mr. Young gave and does not apply otherwise.
      */
-    private List<Map.Entry<ProjectPair,Integer>> gatherData() throws FileNotFoundException,IOException
+    private List<Map.Entry<ProjectPair, Double>> gatherData() throws FileNotFoundException, IOException
     {
-        List<Map.Entry<ProjectPair,Integer>> result = new ArrayList<>();
+        List<Map.Entry<ProjectPair, Double>> result = new ArrayList<>();
         List<ProjectPair> unusedPairs = new LinkedList<>(); //Since the data only includes top 90%, this allows other 10% to be filled with 0s.
         unusedPairs.addAll(pairList); //Needed because its a linked list (will speed up the remove method by a good amount).
 
-        for(int i = 0; i <= 343; i++)
+        for (int i = 0; i <= 343; i++)
         {
             BufferedReader in = new BufferedReader( //Sorry this is meant for my computer for now.
                     new FileReader("C:\\Users\\maxv0\\OneDrive\\Projects\\IntelliJ\\Javaplagiarism\\RobotAnony\\resultAbove10Percent\\" +
-                    "match" + i + "-link.html"));
-            for(int j = 0; j < 5; j++)
+                            "match" + i + "-link.html"));
+            for (int j = 0; j < 5; j++)
                 in.readLine();
-            String projectNameLine = in.readLine(); //6th line which contains the project names.
-            String matchValueLine = in.readLine(); //7th line which contains the percent match.
 
-            //unusedPairs.remove(The Project Pair generated goes here)
+            String projectNameLine = in.readLine(); //6th line which contains the project names.
+            int index = projectNameLine.indexOf("Student");
+            String p1Name = projectNameLine.substring(i, i + 32);//This is abusing the structure of those html files.
+            String p2Name = projectNameLine.substring(i + 35, i + 67); //TODO: For the love of god test this!
+            Project p1 = null, p2 = null;
+            for (Project p : projects)
+            {
+                if (p.getFileName().equals(p1Name))
+                    p1 = p;
+                if (p.getFileName().equals(p2Name))
+                    p2 = p;
+            }
+
+            String matchValueLine = in.readLine(); //7th line which contains the percent match.
+            Double value = Double.valueOf(matchValueLine.substring(21, matchValueLine.indexOf("%")));
+
+            result.add(new AbstractMap.SimpleEntry<ProjectPair, Double>(new ProjectPair(p1, p2), value));
+            unusedPairs.remove(new ProjectPair(p1,p2));
         }
-        return null; //TODO: Fix this (gotta please that compiler).
+        for(ProjectPair p : unusedPairs)//Young's data only includes values >= 10%, so the rest are being seeded as 5% for now.
+        {
+            result.add(new AbstractMap.SimpleEntry<ProjectPair,Double>(p, 5.0)); //the value 5.0 is arbitrary
+        }
+        return result;
     }
 }
+

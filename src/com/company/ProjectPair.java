@@ -6,8 +6,9 @@ import java.io.*;
 /**
  * Created by Max Vigdorchik on 5/3/2016.
  */
-public class ProjectPair {
-    private Project p1, p2;
+public class ProjectPair
+{
+    private final Project p1, p2;
     //private double sketchyScore; //When we are done this should cap out at 100 (i.e. all of our MAXIMUM constants sum to 100).
     //TODO: Find a way to seed all of the following constant values (more to come).
     private final double IMPORT_MAXIMUM = 5; //Might want to hardcode this as 0 since our test cases have no imports.
@@ -17,7 +18,8 @@ public class ProjectPair {
     //Equation to use: 2/(1 + Math.exp(-Math.pow(x,2))) -1 because it grows most in middle instead of start
     //private List<String> comments; TODO: Implement comments for what is contributing to the sketchy score.
 
-    public ProjectPair(Project p1, Project p2) {
+    ProjectPair(Project p1, Project p2)
+    {
         this.p1 = p1;
         this.p2 = p2;
         //sketchyScore = 0;
@@ -46,8 +48,10 @@ public class ProjectPair {
         List<String> p1Import = p1.parseImport();
         List<String> p2Import = p2.parseImport();
 
-        for (int i = 0; i < p1Import.size(); i++) {
-            for (int j = 0; j < p2Import.size(); j++) {
+        for (int i = 0; i < p1Import.size(); i++)
+        {
+            for (int j = 0; j < p2Import.size(); j++)
+            {
                 if (p1Import.get(i).equalsIgnoreCase(p2Import.get(j))) //TODO: Might need something more robust than equals.
                     matchAmount++;
             }
@@ -62,12 +66,14 @@ public class ProjectPair {
      *
      * @return The amount that the sketchy score increased.
      */
-    public double compareComments() {
+    public double compareComments()
+    {
         double matchScore = 0;
         List<String> p1Comments = p1.parseComments();
         List<String> p2Comments = p2.parseComments();
 
-        for (String s1 : p1Comments) {
+        for (String s1 : p1Comments)
+        {
             double greatest = 0;
             for (String s2 : p2Comments) //For each string it only matches it to the most similar comment.
             {
@@ -89,10 +95,12 @@ public class ProjectPair {
      * @param s2 String 2
      * @return double from 0.0 to 1.0 where 1.0 means the strings are identical.
      */
-    private static double stringSimilarity(String s1, String s2) {
+    private static double stringSimilarity(String s1, String s2)
+    {
         String longer = s1;
         String shorter = s2;
-        if (longer.length() < shorter.length()) {
+        if (longer.length() < shorter.length())
+        {
             longer = s2;
             shorter = s1;
         }
@@ -117,12 +125,15 @@ public class ProjectPair {
         s2 = s2.toLowerCase();
 
         int[] costs = new int[s2.length() + 1];
-        for (int i = 0; i <= s1.length(); i++) {
+        for (int i = 0; i <= s1.length(); i++)
+        {
             int lastValue = i;
-            for (int j = 0; j <= s2.length(); j++) {
+            for (int j = 0; j <= s2.length(); j++)
+            {
                 if (i == 0)
                     costs[j] = j;
-                else if (j > 0) {
+                else if (j > 0)
+                {
                     int newValue = costs[j - 1];
                     if (s1.charAt(i - 1) != s2.charAt(j - 1))
                         newValue = Math.min(Math.min(newValue, lastValue), costs[j]) + 1;
@@ -136,11 +147,21 @@ public class ProjectPair {
         return (double) costs[s2.length()];
     }
 
-    public Project getP1() {
+    @Override
+    public boolean equals(Object o)
+    {
+        if (!(o instanceof ProjectPair))
+            return false;
+        return ((ProjectPair) o).getP1().equals(this.p1) && ((ProjectPair) o).getP2().equals(this.p2);
+    }
+
+    public Project getP1()
+    {
         return p1;
     }
 
-    public Project getP2() {
+    public Project getP2()
+    {
         return p2;
     }
 
