@@ -23,11 +23,9 @@ public class SketchyLearning //IGNORE THIS FOR NOW, JUST A PLACEHOLDER.
         try
         {
             data = gatherData();
-        } catch (FileNotFoundException e)
-        {
-            //TODO: HANDLE IT.
         } catch (IOException e)
         {
+            e.printStackTrace();
             //TODO: Catch something here too.
         }
     }
@@ -37,7 +35,7 @@ public class SketchyLearning //IGNORE THIS FOR NOW, JUST A PLACEHOLDER.
      * The data is not formatted in a good way for this, so the method will be really ugly. Sorry. It is also specific to
      * the exact set of files Mr. Young gave and does not apply otherwise.
      */
-    private List<Map.Entry<ProjectPair, Double>> gatherData() throws FileNotFoundException, IOException
+    private List<Map.Entry<ProjectPair, Double>> gatherData() throws IOException
     {
         List<Map.Entry<ProjectPair, Double>> result = new ArrayList<>();
         List<ProjectPair> unusedPairs = new LinkedList<>(); //Since the data only includes top 90%, this allows other 10% to be filled with 0s.
@@ -52,28 +50,25 @@ public class SketchyLearning //IGNORE THIS FOR NOW, JUST A PLACEHOLDER.
                 in.readLine();
 
             String projectNameLine = in.readLine(); //6th line which contains the project names.
-            int index = projectNameLine.indexOf("Student");
-            String p1Name = projectNameLine.substring(i, i + 32);//This is abusing the structure of those html files.
-            String p2Name = projectNameLine.substring(i + 35, i + 67); //TODO: For the love of god test this!
-            Project p1 = null, p2 = null;
+            String p1Name = projectNameLine.substring(32, 64);//This is abusing the structure of those html files.
+            String p2Name = projectNameLine.substring(67, 99);
+            Project p1 = new Project("",""), p2 = new Project("","");
             for (Project p : projects)
             {
-                if (p.getFileName().equals(p1Name))
+                if (p.getFileName().equalsIgnoreCase(p1Name))
                     p1 = p;
-                if (p.getFileName().equals(p2Name))
+                if (p.getFileName().equalsIgnoreCase(p2Name))
                     p2 = p;
             }
 
             String matchValueLine = in.readLine(); //7th line which contains the percent match.
-            Double value = Double.valueOf(matchValueLine.substring(21, matchValueLine.indexOf("%")));
+            Double value = Double.valueOf(matchValueLine.substring(20, matchValueLine.indexOf("%")));
 
             result.add(new AbstractMap.SimpleEntry<ProjectPair, Double>(new ProjectPair(p1, p2), value));
             unusedPairs.remove(new ProjectPair(p1,p2));
         }
         for(ProjectPair p : unusedPairs)//Young's data only includes values >= 10%, so the rest are being seeded as 5% for now.
-        {
             result.add(new AbstractMap.SimpleEntry<ProjectPair,Double>(p, 5.0)); //the value 5.0 is arbitrary
-        }
         return result;
     }
 }
