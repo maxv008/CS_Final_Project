@@ -45,7 +45,7 @@ public class Main
         //TODO: Following section will be used to implement machine learning.
         SketchyLearning s = new SketchyLearning(projectList, pairList);
 
-        in.next(); //just so it doesn't quit, don't forget to press enter to end the process when done testing.
+        //in.next(); //just so it doesn't quit, don't forget to press enter to end the process when done testing.
     }
 
 }

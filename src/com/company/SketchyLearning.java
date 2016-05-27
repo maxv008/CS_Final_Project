@@ -26,6 +26,7 @@ public class SketchyLearning //IGNORE THIS FOR NOW, JUST A PLACEHOLDER.
         } catch (IOException e)
         {
             e.printStackTrace();
+            System.exit(1);
             //TODO: Catch something here too.
         }
     }
