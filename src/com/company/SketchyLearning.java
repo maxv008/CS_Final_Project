@@ -33,6 +33,7 @@ public class SketchyLearning
 
     /**
      * Calculated the residual r_i for a certain data point
+     *
      * @param dataPoint Known data point with Project pair and the similarity.
      * @return The difference between "actual" value and predicted value.
      */
@@ -49,7 +50,7 @@ public class SketchyLearning
     private List<Map.Entry<ProjectPair, Double>> gatherData() throws IOException
     {
         List<Map.Entry<ProjectPair, Double>> result = new ArrayList<>();
-        List<ProjectPair> unusedPairs = new LinkedList<>(); //Since the data only includes top 90%, this allows other 10% to be filled with 0s.
+        List<ProjectPair> unusedPairs = new LinkedList<>(); //Since the data only includes top 90%, this allows other 10% to be filled arbitrarily.
         unusedPairs.addAll(pairList); //Needed because its a linked list (will speed up the remove method by a good amount).
 
         for (int i = 0; i <= 343; i++)
@@ -63,7 +64,7 @@ public class SketchyLearning
             String projectNameLine = in.readLine(); //6th line which contains the project names.
             String p1Name = projectNameLine.substring(32, 64);//This is abusing the structure of those html files.
             String p2Name = projectNameLine.substring(67, 99);
-            Project p1 = new Project("",""), p2 = new Project("","");
+            Project p1 = new Project("", ""), p2 = new Project("", "");
             for (Project p : projects)
             {
                 if (p.getFileName().equalsIgnoreCase(p1Name))
@@ -73,13 +74,13 @@ public class SketchyLearning
             }
 
             String matchValueLine = in.readLine(); //7th line which contains the percent match.
-            Double value = Double.valueOf(matchValueLine.substring(20, matchValueLine.indexOf("%"))) /100 ;
+            Double value = Double.valueOf(matchValueLine.substring(20, matchValueLine.indexOf("%"))) / 100;
 
             result.add(new AbstractMap.SimpleEntry<ProjectPair, Double>(new ProjectPair(p1, p2), value));
-            unusedPairs.remove(new ProjectPair(p1,p2));
+            unusedPairs.remove(new ProjectPair(p1, p2));
         }
-        for(ProjectPair p : unusedPairs)//Young's data only includes values >= 10%, so the rest are being seeded as 5% for now.
-            result.add(new AbstractMap.SimpleEntry<ProjectPair,Double>(p, 0.05)); //the value 0.05 is arbitrary
+        for (ProjectPair p : unusedPairs)//Young's data only includes values >= 10%, so the rest are being seeded as 5% for now.
+            result.add(new AbstractMap.SimpleEntry<ProjectPair, Double>(p, 0.05)); //the value 0.05 is arbitrary
         return result;
     }
 }
