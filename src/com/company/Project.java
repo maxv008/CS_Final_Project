@@ -4,7 +4,7 @@ import java.util.*;
 import java.io.*;
 
 /**
- * Created by maxv0 on 5/3/2016.
+ * Created by Max Vigdorchik on 5/3/2016.
  */
 public class Project
 {
@@ -26,6 +26,15 @@ public class Project
     public String getFileName()
     {
         return fileName;
+    }
+
+    @Override
+    public boolean equals(Object o )
+    {
+        if(!(o instanceof Project))
+            return false;
+
+        return ((Project) o).toString().equals(this.toString()) && ((Project) o).getFileName().equals(this.getFileName());
     }
 
     /**
