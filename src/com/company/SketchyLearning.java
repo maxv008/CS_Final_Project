@@ -8,7 +8,7 @@ import java.io.*;
  * <p>
  * C:\Users\maxv0\OneDrive\Projects\IntelliJ\Javaplagiarism\RobotAnony\resultAbove10Percent
  */
-public class SketchyLearning //IGNORE THIS FOR NOW, JUST A PLACEHOLDER.
+public class SketchyLearning
 {
     public List<Double> constants;
     private final List<Project> projects;
@@ -29,6 +29,16 @@ public class SketchyLearning //IGNORE THIS FOR NOW, JUST A PLACEHOLDER.
             System.exit(1);
             //TODO: Catch something here too.
         }
+    }
+
+    /**
+     * Calculated the residual r_i for a certain data point
+     * @param dataPoint Known data point with Project pair and the similarity.
+     * @return The difference between "actual" value and predicted value.
+     */
+    private double residual(Map.Entry<ProjectPair, Double> dataPoint)
+    {
+        return dataPoint.getValue() - dataPoint.getKey().getSketchyScore();
     }
 
     /**
@@ -63,13 +73,13 @@ public class SketchyLearning //IGNORE THIS FOR NOW, JUST A PLACEHOLDER.
             }
 
             String matchValueLine = in.readLine(); //7th line which contains the percent match.
-            Double value = Double.valueOf(matchValueLine.substring(20, matchValueLine.indexOf("%")));
+            Double value = Double.valueOf(matchValueLine.substring(20, matchValueLine.indexOf("%"))) /100 ;
 
             result.add(new AbstractMap.SimpleEntry<ProjectPair, Double>(new ProjectPair(p1, p2), value));
             unusedPairs.remove(new ProjectPair(p1,p2));
         }
         for(ProjectPair p : unusedPairs)//Young's data only includes values >= 10%, so the rest are being seeded as 5% for now.
-            result.add(new AbstractMap.SimpleEntry<ProjectPair,Double>(p, 5.0)); //the value 5.0 is arbitrary
+            result.add(new AbstractMap.SimpleEntry<ProjectPair,Double>(p, 0.05)); //the value 0.05 is arbitrary
         return result;
     }
 }
