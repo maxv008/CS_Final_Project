@@ -41,7 +41,7 @@ public class Main
 
         for (ProjectPair p : pairList) //For testing purposes.
         {
-            //System.out.println(p.getSketchyScore());
+            System.out.println(p.getSketchyScore());
         }
 
         //in.next(); //just so it doesn't quit, don't forget to press enter to end the process when done testing.

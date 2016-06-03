@@ -18,9 +18,9 @@ public class SketchyLearning
     public SketchyLearning(List<Project> projects, List<ProjectPair> pairList)
     {
         constants = new TreeMap<>();
-            constants.put("iMax", 5.0);
+            constants.put("iMax", 0.05);
             constants.put("iWeight", 2.0);
-            constants.put("cMax", 20.0);
+            constants.put("cMax", 0.2);
             constants.put("cWeight", 2.0);
         this.projects = projects;
         this.pairList = pairList;
