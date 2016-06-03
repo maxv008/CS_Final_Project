@@ -11,14 +11,23 @@ public class ProjectPair
     private final Project p1, p2;
     //private double sketchyScore; //When we are done this should cap out at 100 (i.e. all of our MAXIMUM constants sum to 100).
     //TODO: Find a way to seed all of the following constant values (more to come).
-    private final double IMPORT_MAXIMUM = 5; //Might want to hardcode this as 0 since our test cases have no imports.
-    private final double IMPORT_WEIGHT = 1; //Smaller number means each matching import counts more, but never more than maximum.
-    private final double COMMENT_MAXIMUM = 20; //Maximum percentage contribution of comments to sketchyscore.
-    private final double COMMENT_WEIGHT = 1;
+    //private final double IMPORT_MAXIMUM = 5; //Might want to hardcode this as 0 since our test cases have no imports.
+    //private final double IMPORT_WEIGHT = 1; //Smaller number means each matching import counts more, but never more than maximum.
+    //private final double COMMENT_MAXIMUM = 20; //Maximum percentage contribution of comments to sketchyscore.
+    //private final double COMMENT_WEIGHT = 1;
+    private SketchyLearning cList;
     //Equation to use: 2/(1 + Math.exp(-Math.pow(x,2))) -1 because it grows most in middle instead of start
     //private List<String> comments; TODO: Implement comments for what is contributing to the sketchy score.
 
-    ProjectPair(Project p1, Project p2)
+    ProjectPair(Project p1, Project p2, SketchyLearning cList)
+    {
+        this.p1 = p1;
+        this.p2 = p2;
+        this.cList = cList;
+        //sketchyScore = 0;
+    }
+
+    ProjectPair(Project p1, Project p2) //This constructor is juts here for the sketchy learning class to use.
     {
         this.p1 = p1;
         this.p2 = p2;
@@ -30,11 +39,24 @@ public class ProjectPair
         double result = 0;
         double importScore = compareImports();
         double commentScore = compareComments();
-
-        result += IMPORT_MAXIMUM * (2.0 / (1 + Math.exp(-IMPORT_WEIGHT * Math.pow(importScore, 2))) - 1.0);
-        result += COMMENT_MAXIMUM * (2.0 / (1 + Math.exp(-COMMENT_WEIGHT * Math.pow(commentScore, 2))) - 1.0);
+        //The Constants are set in the sketchyLearning function, currently set manually.
+        result += statFunction(importScore, "iMax", "iWeight");
+        result += statFunction(commentScore, "cMax" , "cWeight");
 
         return result;
+    }
+
+    /**
+     * Encapsulates the function that converts match amounts into a percent sketchy score.
+     * @param in The Match Amount or whatever other equivalent variable.
+     * @param maxKey Map key to get out one of the constants, given by "[a-z]" + "Max"
+     * @param weightKey Key for the weight constant, given by "[a-z]" + "Weight"
+     * @return The contribution to the sketchy score from 0-maxAmount.
+     */
+    public double statFunction(double in, String maxKey, String weightKey)
+    {
+        return cList.getConstants().get(maxKey) * (2.0 / (1.0 + Math.exp(-cList.getConstants().get(weightKey)
+            * Math.pow(in,2))) - 1.0);
     }
 
     /**
