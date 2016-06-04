@@ -17,8 +17,6 @@ public class Main
         File[] tempFileList = folder.listFiles();
         List<Project> projectList = new ArrayList<Project>();
         List<ProjectPair> pairList = new ArrayList<>();
-        SketchyLearning s = new SketchyLearning(projectList, pairList);
-        s.gatherData(); //TODO: This can be removed once the constants are in place and learning is done.
 
         if (!folder.isDirectory()) {
             System.err.format("%s is not a directory!", folder.getAbsolutePath());
@@ -35,14 +33,19 @@ public class Main
         {
             for (int j = 0; j < i; j++)
             {
-                pairList.add(new ProjectPair(projectList.get(i), projectList.get(j), s));
+                pairList.add(new ProjectPair(projectList.get(i), projectList.get(j)));
             }
         }
 
+        SketchyLearning.setConstants(projectList, pairList); //With everything in place constants can be set.
+
         for (ProjectPair p : pairList) //For testing purposes.
         {
-            System.out.println(p.getSketchyScore());
+            //System.out.println(p.getSketchyScore());
         }
+
+        SketchyLearning.gatherData(); //TODO: Remove all the following when done generating the relevent data.
+        SketchyLearning.writeData();
 
         //in.next(); //just so it doesn't quit, don't forget to press enter to end the process when done testing.
     }

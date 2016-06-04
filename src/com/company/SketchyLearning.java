@@ -5,17 +5,17 @@ import java.io.*;
 
 /**
  * Created by Max Vigdorchik on 5/6/2016.
- * <p>
+ * <p> //C:\Users\maxv0\OneDrive\Projects\IntelliJ\Javaplagiarism\
  * C:\Users\maxv0\OneDrive\Projects\IntelliJ\Javaplagiarism\RobotAnony\resultAbove10Percent
  */
 public class SketchyLearning
 {
-    public Map<String ,Double> constants;
-    private final List<Project> projects;
-    private final List<ProjectPair> pairList;
-    private List<Map.Entry<ProjectPair, Double>> data;
+    public static Map<String ,Double> constants;
+    private static List<Project> projects = new ArrayList<>();
+    private static List<ProjectPair> pairList = new ArrayList<>();
+    private static List<Map.Entry<ProjectPair, Double>> data;
 
-    public SketchyLearning(List<Project> projects, List<ProjectPair> pairList)
+    /*public SketchyLearning(List<Project> projects, List<ProjectPair> pairList)
     {
         constants = new TreeMap<>();
             constants.put("iMax", 0.05);
@@ -24,6 +24,17 @@ public class SketchyLearning
             constants.put("cWeight", 2.0);
         this.projects = projects;
         this.pairList = pairList;
+    } This constructor may not be needed as I am converting this to being static entirely*/
+
+    public static void setConstants(List<Project> p, List<ProjectPair> plist) //Just sets up static constants
+    {
+        constants = new TreeMap<>();
+            constants.put("iMax", 0.05);
+            constants.put("iWeight", 2.0);
+            constants.put("cMax", 0.2);
+            constants.put("cWeight", 2.0);
+        projects = p;
+        pairList = plist;
     }
 
     /**
@@ -32,7 +43,7 @@ public class SketchyLearning
      * @param dataPoint Known data point with Project pair and the similarity.
      * @return The difference between "actual" value and predicted value.
      */
-    private double residual(Map.Entry<ProjectPair, Double> dataPoint)
+    private static double residual(Map.Entry<ProjectPair, Double> dataPoint)
     {
         return dataPoint.getValue() - dataPoint.getKey().getSketchyScore();
     }
@@ -42,7 +53,7 @@ public class SketchyLearning
      * The data is not formatted in a good way for this, so the method will be really ugly. Sorry. It is also specific to
      * the exact set of files Mr. Young gave and does not apply otherwise.
      */
-    public List<Map.Entry<ProjectPair, Double>> gatherData() throws IOException
+    public static List<Map.Entry<ProjectPair, Double>> gatherData() throws IOException
     {
         List<Map.Entry<ProjectPair, Double>> result = new ArrayList<>();
         List<ProjectPair> unusedPairs = new LinkedList<>(); //Since the data only includes top 90%, this allows other 10% to be filled arbitrarily.
@@ -53,13 +64,13 @@ public class SketchyLearning
             for (int i = 0; i <= 343; i++)
             {
                 BufferedReader in = new BufferedReader( //Sorry this is meant for my computer for now.
-                        new FileReader("C:\\Users\\maxv0\\OneDrive\\Projects\\IntelliJ\\Javaplagiarism\\RobotAnony\\resultAbove10Percent\\" +
+                        new FileReader("RobotAnony\\resultAbove10Percent\\" +
                                 "match" + i + "-link.html"));
                 for (int j = 0; j < 5; j++)
                     in.readLine();
 
                 String projectNameLine = in.readLine(); //6th line which contains the project names.
-                String p1Name = projectNameLine.substring(32, 64);//This is abusing the structure of those html files.
+                String p1Name = projectNameLine.substring(32, 64);//This is using the structure of those html files.
                 String p2Name = projectNameLine.substring(67, 99);
                 Project p1 = new Project("", ""), p2 = new Project("", "");
                 for (Project p : projects)
@@ -73,7 +84,7 @@ public class SketchyLearning
                 String matchValueLine = in.readLine(); //7th line which contains the percent match.
                 Double value = Double.valueOf(matchValueLine.substring(20, matchValueLine.indexOf("%"))) / 100;
 
-                result.add(new AbstractMap.SimpleEntry<ProjectPair, Double>(new ProjectPair(p1, p2), value));
+                result.add(new AbstractMap.SimpleEntry<>(new ProjectPair(p1, p2), value));
                 unusedPairs.remove(new ProjectPair(p1, p2));
             }
         }catch(IOException e)
@@ -88,9 +99,28 @@ public class SketchyLearning
         return result;
     }
 
-    public Map<String,Double> getConstants()
+    /**
+     * Writes all necessary data into a file so that it can be processed by a numeric solver.
+     */
+    public static void writeData() throws IOException
     {
-        return constants;
+        BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(new FileOutputStream("Compiled_Data.txt"),"utf-8"));
+        writer.write(constants.size()); writer.newLine();
+
+        for(Double c : constants.values())
+        {
+            writer.write(c.toString());
+            writer.newLine();
+        }
+
+        for(Map.Entry<ProjectPair, Double> d : data)
+        {
+            writer.write(Double.toString(d.getKey().compareComments()) + ","
+                    + Double.toString(d.getKey().compareImports()) + ","
+                    + Double.toString(d.getValue()));
+            writer.newLine();
+        }
     }
+
 }
 

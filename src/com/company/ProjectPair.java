@@ -3,31 +3,13 @@ package com.company;
 import java.util.*;
 import java.io.*;
 
-/**
- * Created by Max Vigdorchik on 5/3/2016.
- */
 public class ProjectPair
 {
     private final Project p1, p2;
-    //private double sketchyScore; //When we are done this should cap out at 100 (i.e. all of our MAXIMUM constants sum to 100).
-    //TODO: Find a way to seed all of the following constant values (more to come).
-    //private final double IMPORT_MAXIMUM = 5; //Might want to hardcode this as 0 since our test cases have no imports.
-    //private final double IMPORT_WEIGHT = 1; //Smaller number means each matching import counts more, but never more than maximum.
-    //private final double COMMENT_MAXIMUM = 20; //Maximum percentage contribution of comments to sketchyscore.
-    //private final double COMMENT_WEIGHT = 1;
-    private SketchyLearning cList;
     //Equation to use: 2/(1 + Math.exp(-Math.pow(x,2))) -1 because it grows most in middle instead of start
     //private List<String> comments; TODO: Implement comments for what is contributing to the sketchy score.
 
-    ProjectPair(Project p1, Project p2, SketchyLearning cList)
-    {
-        this.p1 = p1;
-        this.p2 = p2;
-        this.cList = cList;
-        //sketchyScore = 0;
-    }
-
-    ProjectPair(Project p1, Project p2) //This constructor is juts here for the sketchy learning class to use.
+    ProjectPair(Project p1, Project p2)
     {
         this.p1 = p1;
         this.p2 = p2;
@@ -37,11 +19,9 @@ public class ProjectPair
     public double getSketchyScore()
     {
         double result = 0;
-        double importScore = compareImports();
-        double commentScore = compareComments();
         //The Constants are set in the sketchyLearning function, currently set manually.
-        result += statFunction(importScore, "iMax", "iWeight");
-        result += statFunction(commentScore, "cMax" , "cWeight");
+        result += statFunction(compareImports(), "iMax", "iWeight");
+        result += statFunction(compareComments(), "cMax" , "cWeight");
 
         return result;
     }
@@ -55,7 +35,7 @@ public class ProjectPair
      */
     public double statFunction(double in, String maxKey, String weightKey)
     {
-        return cList.getConstants().get(maxKey) * (2.0 / (1.0 + Math.exp(-cList.getConstants().get(weightKey)
+        return SketchyLearning.constants.get(maxKey) * (2.0 / (1.0 + Math.exp(-SketchyLearning.constants.get(weightKey)
             * Math.pow(in,2))) - 1.0);
     }
 
