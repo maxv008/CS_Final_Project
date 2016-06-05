@@ -26,6 +26,10 @@ public class SketchyLearning
         this.pairList = pairList;
     } This constructor may not be needed as I am converting this to being static entirely*/
 
+    public static void setConstants() {
+        setConstants(null, null);
+    }
+
     public static void setConstants(List<Project> p, List<ProjectPair> plist) //Just sets up static constants
     {
         constants = new TreeMap<>();
