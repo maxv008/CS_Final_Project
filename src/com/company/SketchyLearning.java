@@ -39,6 +39,12 @@ public class SketchyLearning
             constants.put("cWeight", 2.0);
         projects = p;
         pairList = plist;
+        try {
+            data = gatherData();
+        }catch(IOException e)
+        {
+            //TODO: Something
+        }
     }
 
     /**
@@ -99,7 +105,6 @@ public class SketchyLearning
         for (ProjectPair p : unusedPairs)//Young's data only includes values >= 10%, so the rest are being seeded as 5% for now.
             result.add(new AbstractMap.SimpleEntry<ProjectPair, Double>(p, 0.05)); //the value 0.05 is arbitrary
 
-        data = result;
         return result;
     }
 
@@ -109,7 +114,7 @@ public class SketchyLearning
     public static void writeData() throws IOException
     {
         BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(new FileOutputStream("Compiled_Data.txt"),"utf-8"));
-        writer.write(constants.size()); writer.newLine();
+        writer.write(Integer.toString(constants.size())); writer.newLine();
 
         for(Double c : constants.values())
         {
@@ -119,11 +124,12 @@ public class SketchyLearning
 
         for(Map.Entry<ProjectPair, Double> d : data)
         {
-            writer.write(Double.toString(d.getKey().compareComments()) + ","
+            writer.write(Double.toString(d.getKey().compareComments()) + "," //Make sure this is done alphabetically!
                     + Double.toString(d.getKey().compareImports()) + ","
                     + Double.toString(d.getValue()));
             writer.newLine();
         }
+        writer.close();
     }
 
 }

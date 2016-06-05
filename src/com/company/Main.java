@@ -1,5 +1,8 @@
 package com.company;
 
+import com.sun.istack.internal.NotNull;
+import com.sun.istack.internal.Nullable;
+
 import java.io.*;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
@@ -44,10 +47,8 @@ public class Main
             //System.out.println(p.getSketchyScore());
         }
 
-        SketchyLearning.gatherData(); //TODO: Remove all the following when done generating the relevent data.
+        SketchyLearning.gatherData(); //TODO: Remove all the following when done generating the relevant data.
         SketchyLearning.writeData();
-
-        //in.next(); //just so it doesn't quit, don't forget to press enter to end the process when done testing.
     }
 
 }
