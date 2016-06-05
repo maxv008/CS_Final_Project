@@ -1,0 +1,5 @@
+*** testfit status = 1
+Maximum 0 = 0.105803
+Weight 0 = 9.852543
+Maximum 1 = 0.100842
+Weight 1 = 63.096823
