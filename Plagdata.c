@@ -68,7 +68,7 @@ int testfit()
 	FILE *data;
 	FILE *output;
 	data = fopen("Compiled_Data.txt", "r");
-	output = fopen("Result.txt", "w");
+	output = fopen("Constants.ini", "w");
 	int n;
 	fscanf(data, "%d", &n);
 	double p[4];
@@ -91,7 +91,7 @@ int testfit()
 	mp_par constraints[4];
 
 	memset(&result, 0, sizeof(result));       /* Zero results structure and parameter constraints */
-	memset(&constraints, 0, sizeof(constraints));
+	memset(constraints, 0, sizeof(constraints));
 	for (i = 0; i < n / 2; i++)
 	{
 		constraints[2 * i].limited[0] = 1;
@@ -104,12 +104,18 @@ int testfit()
 	v.y = y;
 
 	/* Call fitting function for 820 data points and 4 (n) parameters */
-	status = mpfit(statfunc, 820, n, p, 0, 0, (void *)&v, &result);
+	status = mpfit(statfunc, 820, n, p, constraints, 0, (void *)&v, &result);
 
-	fprintf(output, "*** testfit status = %d\n", status);
+	fprintf(output, "*** testfit status = %d (Editing this file is not recommended)\n", status);
 	for(i = 0; i < n; i++)
 	{
-		fprintf(output, "Constant %d = %lf\n", i, p[i]);
+		if (i % 2 == 0)
+		{
+			fprintf(output, "Maximum %d = %lf\n", i / 2, p[i]);
+		} else
+		{
+			fprintf(output, "Weight %d = %lf\n", i / 2, p[i]);
+		}
 	}
 	//printresult(p, &result);
 
