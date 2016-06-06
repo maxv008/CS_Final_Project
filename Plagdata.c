@@ -41,17 +41,6 @@ void printresult(double *x, double *xact, mp_result *result)
 
 }
 
-/*
- * linear fit function
- *
- * m - number of data points
- * n - number of parameters (2)
- * p - array of fit parameters
- * dy - array of residuals to be returned
- * vars - private data (struct vars_struct *)
- *
- * RETURNS: error code (0 = success)
- */
 int statfunc(int m, int n, double *p, double *dy, double **dvec, void *vars)
 {
 	int i, j;
