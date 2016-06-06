@@ -15,6 +15,10 @@ public class SketchyLearning
     private static List<ProjectPair> pairList = new ArrayList<>();
     private static List<Map.Entry<ProjectPair, Double>> data;
 
+    /**
+     * Only use this constructor if you are not calling gatherdata() or writedata() for machine learning.
+     * This can be called in normal use though as it will pull constants from the ini file.
+     */
     public static void setConstants()
     {
         setConstants(null, null);
@@ -31,7 +35,7 @@ public class SketchyLearning
         pairList = plist;
         try
         {
-            BufferedReader r = new BufferedReader(new FileReader("Constants.ini")); //Careful as order of Treemap must coincide with order of results.
+            BufferedReader r = new BufferedReader(new FileReader("Constants.ini")); //Careful as order of Treemap must coincide with order of Constants.ini.
             r.readLine();
             for (Map.Entry<String, Double> c : constants.entrySet()) //Grabs constants from results file
             {
