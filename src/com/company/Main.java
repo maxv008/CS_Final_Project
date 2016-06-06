@@ -25,8 +25,7 @@ public class Main
             System.err.format("%s is not a directory!", folder.getAbsolutePath());
             System.exit(1);
         }
-
-        BufferedReader bufferedReader;
+        
         for (File file : folder.listFiles()) {
             String allTextInFile = new String(Files.readAllBytes(file.toPath()), StandardCharsets.UTF_8);
             projectList.add(new Project(allTextInFile, file.getName()));

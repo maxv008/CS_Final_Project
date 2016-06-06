@@ -49,6 +49,7 @@ public class SketchyLearning
                 String value = r.readLine();
                 constants.put(c.getKey(), Double.parseDouble(value.substring(value.indexOf("=") + 2)));
             }
+            r.close();
         } catch (IOException e)
         {
             System.out.println("Can't read pre-calculated values, using defaults \n" +
