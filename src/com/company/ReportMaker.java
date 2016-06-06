@@ -62,7 +62,7 @@ public class ReportMaker extends SwingWorker<Void, String> {
         StringBuilder sb = new StringBuilder();
         addHeader(sb);
         sb.append("<p>").append(projects.size()).append(" Java files to parse.</p>");
-        publish("Initializing machine learning...");
+        publish("Initializing constants...");
         List<ProjectPair> projectPairs = getPairs(projects);
         SketchyLearning.setConstants(projects, projectPairs);
         sb.append("<table><tr><th>Project 1</th><th>Project 2</th><th>Score</th></tr>");

@@ -14,7 +14,7 @@ public class ProjectPair
         this.p2 = p2;
     }
 
-    public double getSketchyScore()
+    public double getSketchyScore() //Every time you add a new metric, add another line here (Might need to make new constants and then seed them).
     {
         double result = 0;
         //The Constants are set in the sketchyLearning function, currently set manually.
@@ -56,7 +56,6 @@ public class ProjectPair
                     matchAmount++;
             }
         }
-        //sketchyScore += IMPORT_MAXIMUM * (2.0 / (1 + Math.exp(-IMPORT_WEIGHT * Math.pow(matchAmount, 2))) - 1.0); DO NOT UNCOMMENT
 
         return matchAmount;
     }
@@ -84,7 +83,6 @@ public class ProjectPair
         }
         //TODO: See if there is a more robust way to use stringSimilarity.
 
-        //sketchyScore += COMMENT_MAXIMUM * (2.0 / (1 + Math.exp(-COMMENT_WEIGHT * Math.pow(matchScore, 2))) - 1.0); DO NOT UNCOMMENT
         return matchScore;
     }
 
