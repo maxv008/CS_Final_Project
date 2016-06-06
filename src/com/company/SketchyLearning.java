@@ -10,7 +10,7 @@ import java.io.*;
  */
 public class SketchyLearning
 {
-    public static Map<String ,Double> constants;
+    public static Map<String, Double> constants;
     private static List<Project> projects = new ArrayList<>();
     private static List<ProjectPair> pairList = new ArrayList<>();
     private static List<Map.Entry<ProjectPair, Double>> data;
@@ -26,24 +26,33 @@ public class SketchyLearning
         this.pairList = pairList;
     } This constructor may not be needed as I am converting this to being static entirely*/
 
-    public static void setConstants() {
+    public static void setConstants()
+    {
         setConstants(null, null);
     }
 
     public static void setConstants(List<Project> p, List<ProjectPair> plist) //Just sets up static constants
     {
         constants = new TreeMap<>();
-            constants.put("iMax", 0.05);
-            constants.put("iWeight", 2.0);
-            constants.put("cMax", 0.2);
-            constants.put("cWeight", 2.0);
+        constants.put("iMax", 0.05);
+        constants.put("iWeight", 2.0);
+        constants.put("cMax", 0.2);
+        constants.put("cWeight", 2.0);
         projects = p;
         pairList = plist;
-        try {
-            data = gatherData();
-        }catch(IOException e)
+        try
         {
-            //TODO: Something
+            BufferedReader r = new BufferedReader(new FileReader("Result.txt")); //Careful as order of Treemap must coincide with order of results.
+            r.readLine();
+            for (Map.Entry<String, Double> c : constants.entrySet()) //Grabs constants from results file
+            {
+                String value = r.readLine();
+                constants.put(c.getKey(), Double.parseDouble(value.substring(value.indexOf("=") + 2)));
+            }
+        } catch (IOException e)
+        {
+            System.out.println("Can't read pre-calculated values, using defaults \n" +
+                    "This should have no effect on the program.");
         }
     }
 
@@ -96,8 +105,9 @@ public class SketchyLearning
 
                 result.add(new AbstractMap.SimpleEntry<>(new ProjectPair(p1, p2), value));
                 unusedPairs.remove(new ProjectPair(p1, p2));
+                in.close();
             }
-        }catch(IOException e)
+        } catch (IOException e)
         {
             e.printStackTrace();
             System.exit(1);
@@ -113,16 +123,17 @@ public class SketchyLearning
      */
     public static void writeData() throws IOException
     {
-        BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(new FileOutputStream("Compiled_Data.txt"),"utf-8"));
-        writer.write(Integer.toString(constants.size())); writer.newLine();
+        BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(new FileOutputStream("Compiled_Data.txt"), "utf-8"));
+        writer.write(Integer.toString(constants.size()));
+        writer.newLine();
 
-        for(Double c : constants.values())
+        for (Double c : constants.values())
         {
             writer.write(c.toString());
             writer.newLine();
         }
 
-        for(Map.Entry<ProjectPair, Double> d : data)
+        for (Map.Entry<ProjectPair, Double> d : data)
         {
             writer.write(Double.toString(d.getKey().compareComments()) + "," //Make sure this is done alphabetically!
                     + Double.toString(d.getKey().compareImports()) + ","

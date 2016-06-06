@@ -42,13 +42,15 @@ public class Main
 
         SketchyLearning.setConstants(projectList, pairList); //With everything in place constants can be set.
 
-        for (ProjectPair p : pairList) //For testing purposes.
+        for (ProjectPair p : pairList) //For testing purposes. Currently printing odd values as weights are set too high.
         {
             //System.out.println(p.getSketchyScore());
         }
 
-        SketchyLearning.gatherData(); //TODO: Remove all the following when done generating the relevant data.
-        SketchyLearning.writeData();
+        for(double d : SketchyLearning.constants.values())
+        {
+            System.out.println(d);
+        }
     }
 
 }

@@ -13,7 +13,6 @@ public class ProjectPair
     {
         this.p1 = p1;
         this.p2 = p2;
-        //sketchyScore = 0;
     }
 
     public double getSketchyScore()
