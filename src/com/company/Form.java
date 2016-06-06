@@ -25,7 +25,6 @@ public class Form {
 
     public static void main(String[] args) {
         (new Form()).setVisible(true);
-        SketchyLearning.setConstants();
     }
 
     public void setVisible(boolean visible) {
@@ -118,7 +117,7 @@ public class Form {
                 }
             });
             rm.execute();
-            rm.get();
+            rm.get(); // Block until we have the report generated
             println("Opening report in a web browser...");
             if(Desktop.isDesktopSupported()) {
                 Desktop.getDesktop().browse(new URI("file://" + reportPath));

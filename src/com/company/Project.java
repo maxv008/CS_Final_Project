@@ -1,10 +1,9 @@
 package com.company;
 
 import java.util.*;
-import java.io.*;
 
 /**
- * Created by Max Vigdorchik on 5/3/2016.
+ * Created by Max on 5/3/2016.
  */
 public class Project
 {
@@ -29,12 +28,11 @@ public class Project
     }
 
     @Override
-    public boolean equals(Object o )
-    {
-        if(!(o instanceof Project))
-            return false;
+    public boolean equals(Object o ) {
+        return (o instanceof Project)
+                && o.toString().equals(this.toString())
+                && ((Project) o).getFileName().equals(this.getFileName());
 
-        return ((Project) o).toString().equals(this.toString()) && ((Project) o).getFileName().equals(this.getFileName());
     }
 
     /**
@@ -44,7 +42,7 @@ public class Project
      */
     public List<String> parseImport() //TODO: to speedup can stop checking after a non import statement (if actually needed).
     {
-        ArrayList<String> result = new ArrayList<String>();
+        ArrayList<String> result = new ArrayList<>();
         String[] firstRun = content.split(";");
 
         for (String s : firstRun) //TODO: Might need to see if there is a comma syntax variation to consider.
